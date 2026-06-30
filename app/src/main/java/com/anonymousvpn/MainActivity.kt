@@ -1,28 +1,52 @@
 package com.anonymousvpn
 
-import android.app.Activity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.LinearLayout
-import android.graphics.Color
-import android.view.Gravity
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
-class MainActivity : Activity() {
-
+class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val layout = LinearLayout(this)
-        layout.orientation = LinearLayout.VERTICAL
-        layout.setBackgroundColor(Color.BLACK)
-        layout.gravity = Gravity.CENTER
-
-        val connect = Button(this)
-        connect.text = "CONNECT"
-        connect.setBackgroundColor(Color.parseColor("#00FF66"))
-        connect.setTextColor(Color.BLACK)
-
-        layout.addView(connect)
-        setContentView(layout)
+        setContent {
+            MainUI()
+        }
     }
 }
+
+@Composable
+fun MainUI() {
+    val bg = Color(0xFF0A0A0A)
+    val neon = Color(0xFF39FF14)
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(bg)
+            .padding(20.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        Text("Anonymous-VPN", color = neon, fontSize = 26.sp)
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Button(onClick = {}) {
+            Text("Connect")
+        }
+
+        Button(onClick = {}) {
+            Text("Settings")
+        }
+    }
+}k
