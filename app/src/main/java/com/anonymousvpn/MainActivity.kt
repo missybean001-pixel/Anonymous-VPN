@@ -3,76 +3,68 @@ package com.anonymousvpn
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.anonymousvpn.github.GitHubClient
+import com.anonymousvpn.github.Repo
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
-            MainUI()
+            RepoScreen()
         }
     }
 }
 
 @Composable
-fun MainUI() {
-    val bg = Color(0xFF0A0A0A)
-    val neon = Color(0xFF39FF14)
+fun RepoScreen() {
+    var token by remember { mutableStateOf("") }
+    var repos by remember { mutableStateOf<List<Repo>>(emptyList()) }
+    val scope = rememberCoroutineScope()
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(bg)
-            .padding(20.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .padding(16.dp)) {
 
-        Text("Anonymous-VPN", color = neon, fontSize = 26.sp)
+        Text("GitHub Repo Viewer")
+        Spacer(modifier = Modifier.height(8.dp))
 
-        Spacer(modifier = Modifier.height(20.dp))
+        OutlinedTextField(
+            value = token,
+            onValueChange = { token = it },
+            label = { Text("GitHub Token") },
+            modifier = Modifier.fillMaxWidth()
+        )
 
-        Button(onClick = {}) {
-            Text("Connect")
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Button(onClick = {
+            scope.launch {
+                try {
+                    repos = GitHubClient.api.getRepos("Bearer $token")
+                } catch (e: Exception) {
+                    repos = emptyList()
+                }
+            }
+        }) {
+            Text("Load Repos")
         }
 
-        Button(onClick = {}) {
-            Text("Settings")
-        }
-    }
-}k@Composable
-fun MainUI() {
-    val bg = Color(0xFF0A0A0A)
-    val neon = Color(0xFF39FF14)
+        Spacer(modifier = Modifier.height(16.dp))
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(bg)
-            .padding(20.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-
-        Text("ForgeDroid GitHub Core", color = neon, fontSize = 22.sp)
-
-        Spacer(modifier = Modifier.height(20.dp))
-
-        Button(onClick = { }) {
-            Text("Connect GitHub (Next Step)")
-        }
-
-        Button(onClick = { }) {
-            Text("Load Repositories (Next Step)")
+        LazyColumn {
+            items(repos) { repo ->
+                Text(repo.name, style = MaterialTheme.typography.bodyLarge)
+                Spacer(modifier = Modifier.height(8.dp))
+            }
         }
     }
 }
