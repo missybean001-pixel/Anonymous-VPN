@@ -49,4 +49,30 @@ fun MainUI() {
             Text("Settings")
         }
     }
-}k
+}k@Composable
+fun MainUI() {
+    val bg = Color(0xFF0A0A0A)
+    val neon = Color(0xFF39FF14)
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(bg)
+            .padding(20.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        Text("ForgeDroid GitHub Core", color = neon, fontSize = 22.sp)
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Button(onClick = { }) {
+            Text("Connect GitHub (Next Step)")
+        }
+
+        Button(onClick = { }) {
+            Text("Load Repositories (Next Step)")
+        }
+    }
+}
