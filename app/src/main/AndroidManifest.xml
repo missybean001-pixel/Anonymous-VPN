@@ -1,5 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!-- Required permission for network access -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:label="Anonymous VPN"
         android:theme="@android:style/Theme.DeviceDefault.NoActionBar">
@@ -13,6 +16,13 @@
             </intent-filter>
 
         </activity>
+
+        <!-- VPN service declaration (bind permission required by the platform) -->
+        <service
+            android:name=".VPNService"
+            android:permission="android.permission.BIND_VPN_SERVICE"
+            android:exported="false">
+        </service>
 
     </application>
 
